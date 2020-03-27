@@ -1,4 +1,4 @@
-package org.example;
+package helloworld;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -24,8 +24,22 @@ public class Consumer {
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), "UTF-8");
             System.out.println(" [x] Received '" + message + "'");
+            try {
+                doWork(message);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                System.out.println(" [x] Done");
+                channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+            }
         };
-        channel.basicConsume(QUEUE_NAME, true, deliverCallback, s -> {});
+        boolean autoAck = false;
+        channel.basicConsume(QUEUE_NAME, false, deliverCallback, consumerTag -> {});
     }
 
+    public static void doWork(String task) throws InterruptedException {
+        for (char ch: task.toCharArray()) {
+            if (ch == '.') Thread.sleep(1000);
+        }
+    }
 }

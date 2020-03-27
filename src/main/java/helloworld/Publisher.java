@@ -1,4 +1,4 @@
-package org.example;
+package helloworld;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -18,11 +18,18 @@ public class Publisher {
 
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
-            String message = "Hello World!";
 
-            channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
+            String message = ".";
+            int count = 0;
 
-            System.out.println(" [x] Sent '" + message + "'");
+            while (count <= 100) {
+                String toSend = "Message " + count + ": " + message;
+                channel.basicPublish("", QUEUE_NAME, null, toSend.getBytes());
+                System.out.println(" [x] Sent '" + toSend + "'");
+                message += ".";
+                count++;
+                Thread.sleep(1000);
+            }
 
         }
 
