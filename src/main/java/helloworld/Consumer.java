@@ -5,6 +5,15 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 
+/**
+ * Consumer that split the tasks with other consumers from the beginning.
+ * Example: - we have 10 tasks
+ * - 2 consumers
+ * - consumer 1 will get the odd tasks
+ * - consumer 2 will get the even tasks
+ * - the tasks are reserved from the beginning regardless of the time each tasks take
+ */
+
 public class Consumer {
 
     private final static String QUEUE_NAME = "hello";

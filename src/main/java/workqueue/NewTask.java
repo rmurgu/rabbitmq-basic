@@ -7,6 +7,8 @@ import com.rabbitmq.client.MessageProperties;
 
 /**
  * Publisher with a durable queue and persistent messages
+ * Each task is delivered to exactly one worker
+ * If one consumer will finish his task will take the next one from the queue
  */
 
 public class NewTask {
